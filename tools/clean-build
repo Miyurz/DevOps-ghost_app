@@ -1,0 +1,6 @@
+#!/bin/bash
+
+chmod 755 repo.sh
+chmod 755 rebuild
+./repo.sh
+./rebuild

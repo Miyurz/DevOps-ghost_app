@@ -1,0 +1,3 @@
+Infrastructure/tools.git
+Infrastructure/vagrant-tools.git
+ghost-themes/ghost-core.git

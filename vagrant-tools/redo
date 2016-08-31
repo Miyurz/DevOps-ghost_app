@@ -1,0 +1,13 @@
+#/bin/bash
+
+
+#Rsync changes
+rsync -uad --delete --exclude '.git' --stats /vagrant/ghost-vagrant/  /var/www/ghost/
+rsync -ua /vagrant/config.js /var/www/ghost/
+
+chown -R ghost:ghost /var/www/ghost
+cd /var/www/ghost
+pkill node
+npm install sqlite3
+npm start
+

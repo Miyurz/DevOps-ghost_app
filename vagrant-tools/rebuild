@@ -1,0 +1,61 @@
+#!/bin/bash
+
+GIT=$(which git) 2> /dev/null
+
+if [ $? == 0 ];
+then
+   echo "git is installed."
+else
+   echo You may want to try installing git.
+   exit 1
+fi
+
+if [ -d "vagrant-tool" ];
+   cd vagrant-tool
+else
+   git clone http://git.publiodigital.com/infrastructure/vagrant-tool.git
+   cd vagrant-tool
+fi
+
+git checkout local_dev
+git pull
+
+echo "I am going to rebuild vagrant machine for you"
+
+VAGRANT_DIR=vagrant.d
+
+if [ -f Vagrantfile ]
+   echo "Proceeding since vagrant file is available";
+else
+   echo "git clone may have failed"
+   exit 1
+fi
+
+
+if [ -d ${VAGRANT_DIR} ];
+then
+   echo "Looks like the virtual machine is already on!"
+   echo "Do you want to start clean. if yes, press y else press n"
+   read input
+   if [ $input == "y" ];
+   then
+      vagrant destroy -f
+   elif [ $input == "n" ];
+      vagrant reload --provision
+   else
+      echo "I dont understand your input."
+      exit 1
+   fi
+else
+   vagrant up
+   vagrant reload --provision
+fi
+
+if [ $? == 0 ];
+then
+   vagrant ssh
+else
+   echo "ERROR: Looks like soemthing went wrong!!!!"
+   exit 1
+fi
+
